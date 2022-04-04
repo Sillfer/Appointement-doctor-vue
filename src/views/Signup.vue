@@ -124,10 +124,10 @@ export default {
       this.clientData.firstname = "";
       this.clientData.lastname = "";
       this.clientData.age = "";
-      this.$router.push("/login");
       this.$swal(
         "This is your ID. Please don't lose it.</br>" + data.reference
       );
+      this.$router.push("/login");
     },
   },
 };

@@ -60,7 +60,7 @@
                       </p>
                     </div>
                   </div>
-                  <div class="alert alert-danger" role="alert" v-if="erreur">
+                  <div class="d-flex justify-content-center align-items-center alert alert-danger " role="alert" v-if="erreur">
                     {{ erreur }}
                   </div>
                 </div>
@@ -100,7 +100,6 @@ export default {
 
       if (data.message) {
         this.erreur = data.message;
-        console.log(this.erreur);
       } else {
         this.$router.push("/rdv/" + this.refl);
       }

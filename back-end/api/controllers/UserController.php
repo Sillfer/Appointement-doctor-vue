@@ -1,31 +1,29 @@
 <?php
 
-// include_once '../Database/DB.php';
-// include_once '../models/User.php';
 
 class UserController //UtilisateurController
 {
 
     public function addUser() //ajouterUtil
     {
-        header('Access-Control-Allow-Origin: *');   
-        header('Content-Type: application/json');
-        header('Access-Control-Allow-Methods: POST');
-        header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
-        $data = json_decode(file_get_contents("php://input"));
-        $user = new User();
-        $ref = $this->nbru($data->lastname); // add random number to 
-        $user->setReference($ref);
-        $user->setFirstName($data->firstname);
-        $user->setLastName($data->lastname);
-        $user->setAge($data->age);
-        $tab = array("reference" => $ref,   "firstname" => $data->firstname, "lastname" => $data->lastname, "age" => $data->age);
+        header('Access-Control-Allow-Origin: *'); //for cross-domain AJAX requests
+        header('Content-Type: application/json');   //for JSON response
+        header('Access-Control-Allow-Methods: POST');   //for POST request
+        header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');    //for headers
+        $data = json_decode(file_get_contents("php://input"));  //for getting data from AJAX request
+        $user = new User(); 
+        $ref = $this->nbru($data->lastname);    //for getting the last id of the user
+        $user->setReference($ref);  //for setting the reference of the user
+        $user->setFirstName($data->firstname);  //for setting the first name of the user
+        $user->setLastName($data->lastname);    //for setting the last name of the user
+        $user->setAge($data->age);  //for setting the age of the user
+        $tab = array("reference" => $ref,   "firstname" => $data->firstname, "lastname" => $data->lastname, "age" => $data->age);   
         $user->addUser($tab);
-        echo json_encode($tab);
+        echo json_encode($tab); //for sending the data to the AJAX request
     }
 
 
-    public function nbru($lastname)  // generate random number
+    public function nbru($lastname)      
     {
         $user = new User();
         $nb = $user->count();

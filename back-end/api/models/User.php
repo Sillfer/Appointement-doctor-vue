@@ -3,8 +3,6 @@
 class User
 {
 
-    // private $conn;  
-    // private $table = 'users';
     private  $reference;
     private  $firstname;
     private  $lastname;
@@ -38,7 +36,7 @@ class User
         return $res;
     }
 
-    public function addUser($tab)  //ajouterU
+    public function addUser($tab)   
     {
 
         $ref = $tab['reference'];
@@ -69,7 +67,6 @@ class User
         return array("message"=>"This ID doesn't exist");
        }
         
-        //    $res->close();
            $res=null;
       
     }

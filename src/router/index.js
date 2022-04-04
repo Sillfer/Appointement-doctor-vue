@@ -21,11 +21,11 @@ const routes = [
     name: 'Signup',
     component: Signup,
   },
-  {
-    path: '/reservation',
-    name: 'Reservation',
-    component: Reservation,
-  },
+  // {
+  //   path: '/reservation',
+  //   name: 'Reservation',
+  //   component: Reservation,
+  // },
   {
     path: "/reservation/:ref",
     name: "Reservation",

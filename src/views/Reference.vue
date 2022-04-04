@@ -34,7 +34,7 @@
                   <div v-else>
                     <label
                       for="inputEmail4"
-                      class="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4"
+                      class="text-center h2 fw-bold mx-1 mx-md-4 mt-4"
                       >Welcome To Skin Care Inc</label
                     ><br /><br />
                     <input
@@ -54,7 +54,7 @@
                     <div>
                       <p class="mt-5 pb-lg-2" style="color: #393f81">
                         Don't have an account ?
-                        <router-link :to="{ path: '/signup' }"
+                        <router-link :to="{ path: '/' }"
                           >Signup</router-link
                         >
                       </p>

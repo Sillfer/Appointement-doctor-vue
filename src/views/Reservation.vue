@@ -1,62 +1,99 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <router-link :to="{ path: '/rdv/' + $route.params.ref }">
-        retour</router-link
-      >
-    </div>
-    <div class="row">
-      <div class="alert alert-danger" role="alert" v-if="erreur">
-        {{ erreur }}
+  <section
+    class="bg-image"
+    style="
+      background-image: url('https://images.all-free-download.com/images/graphiclarge/medical_and_healthcare_flat_icons_set_312185.jpg');
+
+      height: 100vh;
+    "
+  >
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-12 col-xl-11">
+          <div class="card text-black" style="border-radius: 25px">
+            <div class="card-body p-md-5">
+              <div class="row justify-content-center">
+                <div class="container">
+                  <div class="row">
+                    <div class="alert alert-danger" role="alert" v-if="erreur">
+                      {{ erreur }}
+                    </div>
+                  </div>
+                  <form class="mx-1 mx-md-4" v-on:submit.prevent="Submt">
+                    <div
+                      class="d-flex flex-row justify-content-center align-items-center mb-4"
+                    >
+                      <div class="form-outline flex-fill mb-0">
+                        <div class="form-group">
+                          <label for="exampleFormControlInput1">Date :</label>
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="exampleFormControlInput1"
+                            placeholder="date"
+                            v-model="date"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleFormControlSelect1"
+                            >Timeframe :</label
+                          >
+                          <select
+                            class="form-control"
+                            id="exampleFormControlSelect1"
+                            v-model="rdvData.horaire"
+                          >
+                            <option selected disabled>
+                              Choose a Timeframe
+                            </option>
+                            <option
+                              v-for="(el, index) in horairesPr"
+                              :key="index"
+                              :disabled="el.etat"
+                            >
+                              {{ el.val }}
+                            </option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleFormControlTextarea1"
+                            >Reason for the visit :</label
+                          >
+                          <select
+                            class="form-control"
+                            id="exampleFormControlSelect1"
+                            v-model="rdvData.typeCons"
+                          >
+                            <option>Acne</option>
+                            <option>Signs of Aging</option>
+                            <option>Skin Cancer</option>
+                            <option>Hair Loss</option>
+                            <option>Rosacea</option>
+                            <option>Varicose</option>
+                            <option>Spider Veins</option>
+                            <option>Infection</option>
+                            <option>Plant allergic reaction</option>
+                          </select>
+                        </div>
+                        <button
+                          type="submit"
+                          class="btn btn-primary mt-2 btn-lg"
+                        >
+                          Reserve
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <form class="crd col-8" v-on:submit.prevent="Submt">
-        <div class="form-group">
-          <label for="exampleFormControlInput1">Date :</label>
-          <input
-            type="date"
-            class="form-control"
-            id="exampleFormControlInput1"
-            placeholder="date"
-            v-model="date"
-          />
-        </div>
-        <div class="form-group">
-          <label for="exampleFormControlSelect1">Timeframe :</label>
-          <select
-            class="form-control"
-            id="exampleFormControlSelect1"
-            v-model="rdvData.horaire"
-          >
-            <option selected disabled>choisir un horaire</option>       
-            <option
-              v-for="(el, index) in horairesPr"
-              :key="index"
-              :disabled="el.etat"
-            >
-              {{ el.val }}
-            </option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="exampleFormControlTextarea1">le sujet de rdv :</label>
-          <textarea
-            class="form-control"
-            placeholder="Reason for the visit:"
-            id="exampleFormControlTextarea1"
-            rows="3"
-            v-model="rdvData.typeCons"
-          ></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary btnv">reserver</button>
-      </form>
-      <!-- <img alt="Vue logo" src="../assets/logo2.png" /> -->
-    </div>
-  </div>
+  </section>
 </template>
 <script>
-/* eslint-disable */
 export default {
   name: "Reservation",
   data() {
@@ -100,18 +137,13 @@ export default {
             body: JSON.stringify(this.rdvData),
           }
         );
-        console.log(this.rdvData);
-        // this.rdvData.date = "";
-        // this.rdvData.horaire = "";
-        // this.rdvData.typeCons = "";
-        // this.rdvData.reference = "";
         this.$router.push("/rdv/" + this.$route.params.ref);
+        this.$swal("Success!", "Your reservation has been made!", "success");
       } else {
-        this.erreur = "veuillez remplir tt les champs";
+        this.erreur = "Please fill in all the fields";
       }
     },
     async getTime(val) {
-      console.log("im in");
       const response = await fetch(
         "http://localhost/brief-6/back-end/api/rdv/afficherHr/" + val
       );
@@ -123,14 +155,12 @@ export default {
     date: async function (val) {
       //
       await this.getTime(val);
-      this.rdvData.horaire = "choisir un horaire";
+      this.rdvData.horaire = "Choose a Timeline";
       await (this.rdvData.date = val);
       await (this.rdvData.reference = this.$route.params.ref);
-      console.log(this.rdvData);
-      //    await (console.log(this.horaires.length));
       if (this.horairesPr.length == this.horaires.length) {
         this.erreur =
-          "il ne reste plus de rdv pour cette date veuillez choisir une autre";
+          "There are no available timeframes for this date, please choose another one";
       } else {
         this.erreur = "";
       }
@@ -138,10 +168,7 @@ export default {
         this.horairesPr[i].etat = false;
         for (var j = 0; j < this.horaires.length; j++) {
           if (this.horairesPr[i].val == this.horaires[j]) {
-            console.log(this.horairesPr[i].etat);
             this.horairesPr[i].etat = true;
-            console.log(i + "///eg///" + this.horairesPr[i].etat);
-            // break;
           }
         }
       }
@@ -149,24 +176,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.crd {
-  position: absolute;
-  top: 20%;
-  left: 20%;
-  color: #2475a0;
-  font-weight: bold;
-}
-.btnv {
-  float: right;
-  margin-top: 4%;
-}
-.form-group {
-  margin-bottom: 10px;
-}
-img {
-  width: 22%;
-  position: absolute;
-  bottom: 0;
-}
-</style>

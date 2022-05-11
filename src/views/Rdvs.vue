@@ -56,7 +56,7 @@
                       <router-link
                         class="btn btn-dark"
                         style="width: 10vh"
-                        :to="{ path: '/reservation/' + ref }"
+                        :to="{ path: '/reservation/'}"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -119,7 +119,7 @@
                                       class="btn btn-success btn-sm rounded-0"
                                       @click="update()"
                                     >
-                                      <i class="fa fa-check"></i>
+                                      Update
                                     </button>
                                     &nbsp;<button
                                       class="btn btn-sm rounded-0"
@@ -220,129 +220,127 @@ export default {
       horaires: [],
     };
   },
-  async mounted() {
-    await this.refer();
-    await this.getAll();
+  mounted(){
+     this.refer();
+     this.getAll();
+ 
   },
-  methods: {
-    async getAll() {
-      const response = await fetch(
-        "http://localhost/brief-6/back-end/api/rdv/afficherRdv/" + this.ref
-      );
-      const data = await response.json();
-      console.log(data);
-      this.rdvs = data;
+  methods:{
+    async getAll(){
+    const response = await fetch('http://localhost/brief-6/back-end/api/rdv/afficherRdv/'+this.ref);
+    const data = await response.json();
+    console.log(data);
+    this.rdvs=data;
     },
-    refer() {
-      this.ref = this.$route.params.ref;
-    },
-    slectU(x) {
-      this.curentElment = x;
+    refer(){
+        this.ref = localStorage.getItem('refl');
+        },
+    slectU(x){
+       this.curentElment=x;
     },
 
     async del() {
-      await fetch(
-        "http://localhost/brief-6/back-end/api/rdv/supprimerRdv/" +
-          this.curentElment,
-        {
-          method: "DELETE",
-        }
-      );
-
-      await this.getAll();
-    },
-    async edit(x) {
-      fetch("http://localhost/brief-6/back-end/api/rdv/getoneRdv/" + x)
-        .then((response) => response.json())
-        .then((data) => {
-          this.editReser = data.id;
-          this.editClient.id = data.id;
-          this.editClient.date = data.date;
-          this.date = data.date;
-          this.editClient.horaire = data.horaire;
-          this.editClient.typeCons = data.typeCons;
-          this.filtrerH(data.date);
-          // console.log(this.editClient.horaire);
+        await fetch('http://localhost/brief-6/back-end/api/rdv/supprimerRdv/'+this.curentElment,{
+            method:"DELETE",
+            
         });
+       await this.getAll();
+               this.$swal("Success!", "Your reservation has been deleted!", "success");
+
     },
-    async update() {
-      console.log(JSON.stringify(this.editClient));
-      await fetch(
-        " http://localhost/brief-6/back-end/api/rdv/modifierRdv/" +
-          this.editClient.id,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(this.editClient),
+    async edit(x){
+        fetch('http://localhost/brief-6/back-end/api/rdv/getoneRdv/'+x)
+        .then(response => response.json())
+        .then(data =>{
+            this.editReser=data.id;
+            this.editClient.id=data.id;
+            this.editClient.date=data.date;
+            this.date=data.date;
+            this.editClient.horaire=data.horaire;
+            this.editClient.typeCons=data.typeCons;
+            this.filtrerH(data.date);
+            // console.log(this.editClient.horaire);
+            
+        })
+    },
+   async update(){
+        console.log(JSON.stringify(this.editClient));
+       await fetch(' http://localhost/brief-6/back-end/api/rdv/modifierRdv/'+this.editClient.id,{
+            method: 'PUT',
+            headers:{
+                'Content-Type': 'application/json',
+            },
+            body:JSON.stringify(this.editClient),
+        });
+        await this.getAll();
+        this.editReser='';
+        this.editClient.id='';
+        this.editClient.date='';
+        this.editClient.horaire='';
+        this.editClient.typeCons='';
+        console.log(JSON.stringify(this.editClient));
+        this.$swal("Success!", "Your reservation has been update!", "success");
+
+        
+    },
+    cancel(){
+        this.editReser='';
+        this.editClient.id=''
+        this.editClient.date='';
+        this.editClient.horaire='';
+        this.editClient.typeCons='';
+    },
+     async getTime(val) {
+            
+            const response = await fetch(
+                "http://localhost/brief-6/back-end/api/rdv/afficherHr/" + val
+            );
+            const data = await response.json();
+            this.horaires = data;
+        },
+         async filtrerH (val) {
+            
+            await this.getTime(val);
+            await (this.editClient.date = val);
+            await (this.editClient.reference = this.$route.params.ref);
+            await console.log(this.editClient);
+            //    await (console.log(this.horaires.length));
+             for (var i = 0; i < this.horairesPr.length; i++) {
+                await (this.horairesPr[i].etat = false);
+                for (var j = 0; j < this.horaires.length; j++) {
+                    if (this.horairesPr[i].val == this.horaires[j]) {
+                        // console.log(this.horairesPr[i].etat);
+                         await (this.horairesPr[i].etat = true);
+                        console.log( this.horaires[j] + "///eg///");
+                       
+                    }
+                }
+            }
         }
-      );
-      await this.getAll();
-      this.editReser = "";
-      this.editClient.id = "";
-      this.editClient.date = "";
-      this.editClient.horaire = "";
-      this.editClient.typeCons = "";
-      console.log(JSON.stringify(this.editClient));
-    },
-    cancel() {
-      this.editReser = "";
-      this.editClient.id = "";
-      this.editClient.date = "";
-      this.editClient.horaire = "";
-      this.editClient.typeCons = "";
-    },
-    async getTime(val) {
-      console.log("im in");
-      const response = await fetch(
-        "http://localhost/brief-6/back-end/api/rdv/afficherHr/" + val
-      );
-      const data = await response.json();
-      this.horaires = data;
-    },
-    async filtrerH(val) {
-      console.log("eeeeeeee");
-      await this.getTime(val);
-      await (this.editClient.date = val);
-      await (this.editClient.reference = this.$route.params.ref);
-      await console.log(this.editClient);
-      //    await (console.log(this.horaires.length));
-      for (var i = 0; i < this.horairesPr.length; i++) {
-        await (this.horairesPr[i].etat = false);
-        for (var j = 0; j < this.horaires.length; j++) {
-          if (this.horairesPr[i].val == this.horaires[j]) {
-            // console.log(this.horairesPr[i].etat);
-            await (this.horairesPr[i].etat = true);
-            console.log(this.horaires[j] + "///eg///");
-          }
-        }
-      }
-    },
   },
   watch: {
-    date: async function (val) {
-      this.editClient.horaire = "choisir un horaire";
-      this.filtrerH(val);
+        date: async function (val) {
+            this.editClient.horaire = "choisir un horaire";
+            this.filtrerH (val);
+        },
     },
-  },
+ 
 };
 </script>
 <style>
-.affcont {
-  position: absolute;
-  /* top: 10%; */
-  padding: 5%;
-  /* left: 5%; */
-  /* transform: translate(-50%, -50%); */
-}
-.rdvherd {
-  height: 10vh;
-}
-.btn-info {
-  color: #fff;
-}
-table th {
-  color: #2475a0;
-}
-</style>
+        .affcont{
+            position: absolute;
+            /* top: 10%; */
+            padding: 5%;
+            /* left: 5%; */
+            /* transform: translate(-50%, -50%); */
+        }
+    .rdvherd{
+        height: 10vh;
+    }
+    .btn-info{color:#fff;}
+    table th{
+        color: #2475a0;
+    }
+
+    </style>

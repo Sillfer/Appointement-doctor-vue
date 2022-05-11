@@ -8,12 +8,12 @@ class User
     private  $lastname;
     private  $age;
 
-    public function setReference($reference)
-    {
-        $this->reference = $reference;
+    public function setReference($reference)      
+    {   
+        $this->reference = $reference;      
     }
 
-    public function setFirstName($firstname)
+    public function setFirstName($firstname)    
     {
         $this->firstname = $firstname;
     }
@@ -28,11 +28,11 @@ class User
     }
 
 
-    public function count()
+    public function count() 
     {
 
-        $qr = "SELECT count(*) as nb from users";
-        $res = DB::connect()->query($qr)->fetch(PDO::FETCH_ASSOC);
+        $qr = "SELECT count(*) as nb from users";       
+        $res = DB::connect()->query($qr)->fetch(PDO::FETCH_ASSOC);  
         return $res;
     }
 
@@ -44,9 +44,7 @@ class User
         $last = $tab['lastname'];
         $age = $tab['age'];
 
-        // $qr='INSERT INTO users (reference, firstname, lastname, age) values("'.$this->reference.'","'.$this->firstname.'","'.$this->lastname.'",'.$this->age.'")';
         $qr = "INSERT INTO `users` ( `reference`, `firstname`, `lastname`, `age`) values  ( '$ref'  ,'$first','$last','$age') ";
-        // die($qr);
         $res = DB::connect()->prepare($qr);
         if ($res->execute()) {
             return 'ok';

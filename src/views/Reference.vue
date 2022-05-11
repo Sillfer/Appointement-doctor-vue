@@ -82,6 +82,7 @@
   </section>
 </template>
 <script>
+/* eslint-disable */
 export default {
   name: "Reference",
   data() {
@@ -90,6 +91,12 @@ export default {
       refl: "",
       erreur: "",
     };
+  },
+  mounted(){
+    let refer_1=localStorage.getItem('refl');
+     if(!refer){
+         this.$router.push('/');
+     }
   },
   methods: {
     async search() {
@@ -100,8 +107,11 @@ export default {
 
       if (data.message) {
         this.erreur = data.message;
+        console.log(this.erreur);
       } else {
-        this.$router.push("/rdv/" + this.refl);
+        localStorage.setItem("refl", this.refl);
+        this.$router.push("/rdv");
+        console.log(this.refl);
       }
     },
   },
@@ -110,3 +120,4 @@ export default {
   },
 };
 </script>
+

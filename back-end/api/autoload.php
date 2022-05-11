@@ -1,9 +1,9 @@
 <?php
 
 
-session_start();
+session_start();    
 
-spl_autoload_register('autoload');
+spl_autoload_register('autoload');  
 function autoload($class_name)
 { 
     $array_paths=array('database/',
@@ -12,7 +12,6 @@ function autoload($class_name)
     $parts=explode('\\',$class_name);
 
     $name=array_pop($parts);
-    // die($class_name);
     foreach($array_paths as $path){
         $file=sprintf($path.'%s.php',$name);
         if(is_file($file)){

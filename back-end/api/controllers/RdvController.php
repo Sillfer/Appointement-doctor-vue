@@ -2,30 +2,22 @@
 
 class RdvController{
 
-    // public function index()
-    // {
-    //     header("location:http://localhost/br6-rdv/Api/rdv/afficherRdv");   
-    //  }
-
+   
     public function ajouterRdv()
     {
-        // if($_SERVER['REQUEST_METHOD']=='POST'){
-        header('Access-Control-Allow-Origin: *');
-        header('Content-Type: application/json');
-        header('Access-Control-Allow-Methods: POST');
+        header('Access-Control-Allow-Origin: *');   // for all origins
+        header('Content-Type: application/json');   
+        header('Access-Control-Allow-Methods: POST');   
         header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
-        $data = json_decode(file_get_contents("php://input"));
-        $rdv=new Rdv();
-        // var_dump($data);
-        // die($data->date);
-        $rdv->setDate($data->date);
+        $data = json_decode(file_get_contents("php://input"));  
+        $rdv=new Rdv();     
+        $rdv->setDate($data->date);         
         $rdv->setHoraire($data->horaire);
         $rdv->setTypeCons($data->typeCons);
         $rdv->setReference($data->reference);
         $s=$rdv->ajouterRdv();
-        echo json_encode($s);
+        echo json_encode($s);   // send response to client
                 
-        // }
     }
 
     public function afficherRdv($ref)
@@ -34,9 +26,9 @@ class RdvController{
         header('Content-Type: application/json');
         header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
-         if($_SERVER['REQUEST_METHOD']=='GET'){
+         if($_SERVER['REQUEST_METHOD']=='GET'){     
         
-        $rdv=new Rdv();
+        $rdv=new Rdv(); 
         $tab=$rdv->afficherRdv($ref);
         echo json_encode($tab);
          }
@@ -68,7 +60,6 @@ class RdvController{
         $rdv->setTypeCons($data->typeCons);
         $s=$rdv->modifierRdv();
         echo "done";
-        // }
         
     }
 
@@ -88,7 +79,6 @@ class RdvController{
 
     public function getoneRdv($id)
     {  
-        // if($_SERVER['REQUEST_METHOD']=='GET'){
             
         header('Access-Control-Allow-Origin: *');
         header('Content-Type: application/json');
@@ -99,7 +89,6 @@ class RdvController{
         $rdvs=$rdv->editRdv();
         echo json_encode($rdvs);
 
-        // }
     }
 
 

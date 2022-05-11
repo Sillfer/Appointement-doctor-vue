@@ -7,7 +7,7 @@ import Reservation from '../views/Reservation.vue'
 const routes = [
   
   {
-    path: "/rdv/:ref",
+    path: "/rdv",
     name: "RendezVous",
     component: Rendv,
   },
@@ -21,13 +21,9 @@ const routes = [
     name: 'Signup',
     component: Signup,
   },
-  // {
-  //   path: '/reservation',
-  //   name: 'Reservation',
-  //   component: Reservation,
-  // },
+ 
   {
-    path: "/reservation/:ref",
+    path: "/reservation",
     name: "Reservation",
     component: Reservation,
   },
